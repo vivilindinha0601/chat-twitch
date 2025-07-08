@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=650, initial-scale=1" />
-  <title>Chat Visual</title>
+  <title>Chat Twitch Custom</title>
   <style>
     html, body {
       margin: 0; padding: 0;
@@ -66,8 +66,41 @@
   </style>
 </head>
 <body>
-  <div id="chat">
-    <!-- O sistema do StreamElements/Twitch vai injetar as mensagens aqui -->
-  </div>
+  <div id="chat"></div>
+
+  <!-- tmi.js da CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/tmi.js@1.8.5/dist/tmi.min.js"></script>
+  <script>
+    const chat = document.getElementById('chat');
+
+    const client = new tmi.Client({
+      channels: ['marcymds'] // <-- Troque por seu canal da Twitch aqui
+    });
+
+    client.connect();
+
+    client.on('message', (channel, tags, message, self) => {
+      if (self) return;
+
+      const msg = document.createElement('div');
+      msg.classList.add('message');
+
+      const nickBox = document.createElement('div');
+      nickBox.classList.add('nick-box');
+      nickBox.textContent = tags['display-name'] || tags.username;
+
+      const textBox = document.createElement('div');
+      textBox.classList.add('text-box');
+      textBox.textContent = message;
+
+      msg.appendChild(nickBox);
+      msg.appendChild(textBox);
+      chat.prepend(msg);
+
+      setTimeout(() => {
+        msg.remove();
+      }, 10000);
+    });
+  </script>
 </body>
 </html>
