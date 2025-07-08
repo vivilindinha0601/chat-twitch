@@ -68,13 +68,12 @@
 <body>
   <div id="chat"></div>
 
-  <!-- tmi.js da CDN -->
   <script src="https://cdn.jsdelivr.net/npm/tmi.js@1.8.5/dist/tmi.min.js"></script>
   <script>
     const chat = document.getElementById('chat');
 
     const client = new tmi.Client({
-      channels: ['marcymds'] // <-- Troque por seu canal da Twitch aqui
+      channels: ['marcymds']
     });
 
     client.connect();
