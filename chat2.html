@@ -1,0 +1,109 @@
+<!DOCTYPE html> 
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chat Básico - Nick em cima grudado</title>
+<style>
+  html, body {
+    margin: 0; padding: 0;
+    width: 650px; height: 800px;
+    background: transparent;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+  }
+  #chat {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+    height: 800px;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  .message {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .nick-box {
+    background-color: #1d120f;
+    color: white;
+    padding: 5px 8px;
+    border-radius: 5px 5px 0 0;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 90px;
+  }
+  .text-box {
+    background-color: #6c7634;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 0 0 5px 5px;
+    max-width: 500px;
+    word-wrap: break-word;
+    /* Tirando margem */
+    margin-top: 0;
+  }
+  .badge {
+    height: 18px;
+    width: 18px;
+  }
+</style>
+</head>
+<body>
+  <div id="chat"></div>
+<script>
+  const chat = document.getElementById('chat');
+
+  const fakeMessages = [
+    { user: "StreamerPro", text: "Sejam bem-vindos!", badges: ["mod"] },
+    { user: "FãDoCanal", text: "Muito legal esse overlay!", badges: ["sub"] },
+    { user: "Visitante123", text: "Show de bola!", badges: [] }
+  ];
+
+  const badgeIcons = {
+    mod: "https://static-cdn.jtvnw.net/chat-badges/mod.png",
+    sub: "https://static-cdn.jtvnw.net/chat-badges/subscriber.png"
+  };
+
+  function addMessage(user, text, badges = []) {
+    const msg = document.createElement('div');
+    msg.classList.add('message');
+
+    const nick = document.createElement('div');
+    nick.classList.add('nick-box');
+
+    badges.forEach(badge => {
+      const img = document.createElement('img');
+      img.classList.add('badge');
+      img.src = badgeIcons[badge] || '';
+      nick.appendChild(img);
+    });
+
+    nick.appendChild(document.createTextNode(user));
+
+    const msgText = document.createElement('div');
+    msgText.classList.add('text-box');
+    msgText.textContent = text;
+
+    msg.appendChild(nick);
+    msg.appendChild(msgText);
+
+    chat.prepend(msg);
+
+    setTimeout(() => {
+      msg.remove();
+    }, 8000);
+  }
+
+  let i = 0;
+  setInterval(() => {
+    const m = fakeMessages[i % fakeMessages.length];
+    addMessage(m.user, m.text, m.badges);
+    i++;
+  }, 4000);
+</script>
+</body>
+</html>
