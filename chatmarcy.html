@@ -60,25 +60,27 @@
 
   <script src="https://cdn.jsdelivr.net/npm/tmi.js@1.8.5/dist/tmi.min.js"></script>
   <script>
-    const chat = document.getElementById('chat');
-    const client = new tmi.Client({ channels: ['marcymds'] }); // canal do streamer
-    client.connect()
-      .then(() => console.log('Conectado'))
-      .catch(err => console.error('Erro ao conectar:', err));
-    client.on('message', (_, tags, message, self) => {
-      if (self) return;
-      const msg = document.createElement('div');
-      msg.classList.add('message');
-      const nick = document.createElement('div');
-      nick.classList.add('nick-box');
-      nick.textContent = tags['display-name'] || tags.username;
-      const txt = document.createElement('div');
-      txt.classList.add('text-box');
-      txt.textContent = message;
-      msg.append(nick, txt);
-      chat.prepend(msg);
-      setTimeout(() => msg.remove(), 10000);
-    });
+    window.onload = () => {
+      const chat = document.getElementById('chat');
+      const client = new tmi.Client({ channels: ['marcymds'] }); // canal do streamer
+      client.connect()
+        .then(() => console.log('Conectado'))
+        .catch(err => console.error('Erro ao conectar:', err));
+      client.on('message', (_, tags, message, self) => {
+        if (self) return;
+        const msg = document.createElement('div');
+        msg.classList.add('message');
+        const nick = document.createElement('div');
+        nick.classList.add('nick-box');
+        nick.textContent = tags['display-name'] || tags.username;
+        const txt = document.createElement('div');
+        txt.classList.add('text-box');
+        txt.textContent = message;
+        msg.append(nick, txt);
+        chat.prepend(msg);
+        setTimeout(() => msg.remove(), 10000);
+      });
+    }
   </script>
 </body>
 </html>
