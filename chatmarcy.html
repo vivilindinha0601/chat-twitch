@@ -12,7 +12,6 @@
       font-family: "Segoe UI", Arial, sans-serif;
       overflow: hidden;
     }
-
     #chat {
       display: flex;
       flex-direction: column-reverse;
@@ -21,14 +20,12 @@
       padding: 20px;
       box-sizing: border-box;
     }
-
     .message {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       animation: fadeUp 10s forwards;
     }
-
     .nick-box {
       background-color: #1d120f;
       color: white;
@@ -40,12 +37,6 @@
       align-items: center;
       gap: 6px;
     }
-
-    .badge {
-      height: 20px;
-      width: 20px;
-    }
-
     .text-box {
       background-color: #6c7634;
       color: black;
@@ -57,7 +48,6 @@
       max-width: 500px;
       word-wrap: break-word;
     }
-
     @keyframes fadeUp {
       0% { opacity: 1; transform: translateY(0); }
       90% { opacity: 1; transform: translateY(0); }
@@ -68,41 +58,24 @@
 <body>
   <div id="chat"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/tmi.js@1.8.5/dist/tmi.min.js"></script>
+  <script src="https://unpkg.com/tmi.js@1.8.5/dist/tmi.min.js"></script>
   <script>
     const chat = document.getElementById('chat');
-
-    const client = new tmi.Client({
-      channels: ['marcymds']
-    });
-
-    client.connect().then(() => {
-      console.log("Conectado à Twitch");
-    }).catch((err) => {
-      console.error("Erro ao conectar:", err);
-    });
-
-    client.on('message', (channel, tags, message, self) => {
+    const client = new tmi.Client({ channels: ['marcymds'] });
+    client.connect().then(() => console.log('Conectado')).catch(err => console.error(err));
+    client.on('message', (_, tags, message, self) => {
       if (self) return;
-
       const msg = document.createElement('div');
       msg.classList.add('message');
-
-      const nickBox = document.createElement('div');
-      nickBox.classList.add('nick-box');
-      nickBox.textContent = tags['display-name'] || tags.username;
-
-      const textBox = document.createElement('div');
-      textBox.classList.add('text-box');
-      textBox.textContent = message;
-
-      msg.appendChild(nickBox);
-      msg.appendChild(textBox);
+      const nick = document.createElement('div');
+      nick.classList.add('nick-box');
+      nick.textContent = tags['display-name'] || tags.username;
+      const txt = document.createElement('div');
+      txt.classList.add('text-box');
+      txt.textContent = message;
+      msg.append(nick, txt);
       chat.prepend(msg);
-
-      setTimeout(() => {
-        msg.remove();
-      }, 10000);
+      setTimeout(() => msg.remove(), 10000);
     });
   </script>
 </body>
