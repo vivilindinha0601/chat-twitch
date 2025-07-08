@@ -58,10 +58,10 @@
 <body>
   <div id="chat"></div>
 
-  <script src="tmi.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tmi.js@1.8.5/dist/tmi.min.js"></script>
   <script>
     const chat = document.getElementById('chat');
-    const client = new tmi.Client({ channels: ['marcymds'] });
+    const client = new tmi.Client({ channels: ['marcymds'] }); // canal do streamer
     client.connect()
       .then(() => console.log('Conectado'))
       .catch(err => console.error('Erro ao conectar:', err));
